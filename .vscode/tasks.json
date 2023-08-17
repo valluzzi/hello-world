@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label":"setvars",
+            "type": "shell",
+            "command":"setvars",
+        },
+        {
+            "label": "compiling...",
+            "type": "shell",
+            "command": "ifort",
+            "args": [
+                "src/*.f90",
+                "/nologo",
+                "/MP", 
+                "/O2", 
+                "/fpp",
+                "/I.\\include",
+                "/libs:static", 
+                "/threads", 
+                "/c"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -2,9 +2,26 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label":"setvars",
+            "label": "setvars",
             "type": "shell",
-            "command":"setvars",
+            "command": "setvars"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "Remove-Item",
+            "args": [
+                "-Recurse", 
+                "-Force",
+                "-Path:build\\*,*.exe",
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
         },
         {
             "label": "compile",
@@ -20,13 +37,18 @@
                 "/Qipo",
                 "/fpp",
                 "/I\".\\include\"",
-                "/libs:static", 
+                "/libs:static",
                 "/threads",
-                //"/Qmkl:parallel",
                 "/module:build\\",
                 "/object:build\\",
                 "/c"
-            ]
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
         },
         {
             "label": "link",
@@ -46,16 +68,34 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             },
             "dependsOn": [
                 "compile"
             ],
             "presentation": {
-                "echo": true, // Automatically close terminal after successful compilation
+                "echo": true,
                 "reveal": "always",
                 "focus": false,
-                "panel": "shared" 
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": ".\\hello-world.exe",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "link"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
             }
         }
     ]

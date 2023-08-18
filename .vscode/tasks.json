@@ -7,23 +7,55 @@
             "command":"setvars",
         },
         {
-            "label": "compiling...",
+            "label": "compile",
             "type": "shell",
             "command": "ifort",
             "args": [
                 "src/*.f90",
                 "/nologo",
-                "/MP", 
-                "/O2", 
+                "/MP",
+                "/O2",
+                "/Qparallel",
+                "/assume:buffered_io",
+                "/Qipo",
                 "/fpp",
-                "/I.\\include",
+                "/I\".\\include\"",
                 "/libs:static", 
-                "/threads", 
+                "/threads",
+                //"/Qmkl:parallel",
+                "/module:build\\",
+                "/object:build\\",
                 "/c"
+            ]
+        },
+        {
+            "label": "link",
+            "type": "shell",
+            "command": "ifort",
+            "args": [
+                "build\\*.obj",
+                "/link",
+                "/LIBPATH:C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2021.4.0\\windows\\compiler\\lib\\intel64",
+                "/LIBPATH:C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\lib\\x64",
+                "/LIBPATH:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\um\\x64",
+                "/LIBPATH:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\ucrt\\x64",
+                "/LIBPATH:.\\lib",
+                "/SUBSYSTEM:CONSOLE",
+                "/STACK:2000000000",
+                "/OUT:hello-world.exe"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "dependsOn": [
+                "compile"
+            ],
+            "presentation": {
+                "echo": true, // Automatically close terminal after successful compilation
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared" 
             }
         }
     ]

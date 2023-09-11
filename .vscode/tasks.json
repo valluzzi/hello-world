@@ -56,15 +56,15 @@
             "command": "ifort",
             "args": [
                 "build\\*.obj",
-                "/link",
-                "/LIBPATH:C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2021.4.0\\windows\\compiler\\lib\\intel64",
-                "/LIBPATH:C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\lib\\x64",
-                "/LIBPATH:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\um\\x64",
-                "/LIBPATH:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\ucrt\\x64",
-                "/LIBPATH:.\\lib",
-                "/SUBSYSTEM:CONSOLE",
-                "/STACK:2000000000",
-                "/OUT:hello-world.exe"
+                "-link",
+                "-libpath:C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2021.4.0\\windows\\compiler\\lib\\intel64",
+                "-libpath:C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\lib\\x64",
+                "-libpath:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\um\\x64",
+                "-libpath:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\ucrt\\x64",
+                "-libpath:.\\lib",
+                "-subsystem:console",
+                "-stack:2000000000",
+                "-out:hello-world.exe"
             ],
             "group": {
                 "kind": "build",
@@ -94,6 +94,21 @@
             "presentation": {
                 "echo": true,
                 "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "del build\\*,*.exe",
+            "group": {
+                "kind": "clean",
+                "isDefault": false
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
                 "focus": false,
                 "panel": "shared"
             }

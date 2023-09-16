@@ -26,7 +26,8 @@
         {
             "label": "compile",
             "type": "shell",
-            "command": "ifort",
+            //"command": "/opt/intel/oneapi/compiler/latest/mac/bin/intel64/ifort",
+            "command": "gfortran",
             "args": [
                 "src/*.f90",
                 "/nologo",
@@ -75,9 +76,6 @@
                 "kind": "build",
                 "isDefault": false
             },
-            "dependsOn": [
-                "compile"
-            ],
             "presentation": {
                 "echo": false,
                 "reveal": "never",
@@ -91,7 +89,7 @@
             "command": ".\\hello-world.exe",
             "group": "build",
             "dependsOn": [
-                "link"
+                "compile"
             ],
             "presentation": {
                 "echo": true,

@@ -1,3 +1,5 @@
 {
+    "cmake.configureOnOpen": false,
+    "fortran": "/opt/intel/oneapi/compiler/latest/linux/bin/intel64/ifort",
     //"fortran.": "C:/Program Files (x86)/Intel/oneAPI/compiler/latest/windows/bin/intel64/ifort.exe",
 }   

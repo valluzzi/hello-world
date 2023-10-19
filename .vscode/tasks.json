@@ -11,9 +11,9 @@
             "type": "shell",
             "command": "Remove-Item",
             "args": [
-                "-Recurse", 
+                "-Recurse",
                 "-Force",
-                "-Path:build\\*,*.exe",
+                "-Path:build\\*,*.exe"
             ],
             "presentation": {
                 "echo": false,
@@ -48,6 +48,11 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared"
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
         },
         {
@@ -84,10 +89,7 @@
             "label": "run",
             "type": "shell",
             "command": ".\\hello-world.exe",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
             "dependsOn": [
                 "link"
             ],
@@ -96,7 +98,8 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared"
-            }
+            },
+            "problemMatcher": []
         },
         {
             "label": "clean",

@@ -44,9 +44,9 @@
                 "/c"
             ],
             "presentation": {
-                "echo": false,
+                "echo": true,
                 "reveal": "always",
-                "focus": false,
+                "focus": true,
                 "panel": "shared"
             },
             "problemMatcher": [],
@@ -62,7 +62,7 @@
             "args": [
                 "build\\*.obj",
                 "-link",
-                "-libpath:C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2021.4.0\\windows\\compiler\\lib\\intel64",
+                "-libpath:C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\latest\\bin",
                 "-libpath:C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Tools\\MSVC\\14.29.30133\\lib\\x64",
                 "-libpath:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\um\\x64",
                 "-libpath:C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\ucrt\\x64",

@@ -1,0 +1,13 @@
+version: '3'
+services:
+  fortran:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    #tty
+    stdin_open: true
+    tty: true
+

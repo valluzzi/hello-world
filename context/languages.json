@@ -1,0 +1,47 @@
+{
+  "id": "languages",
+  "version": "1.0.0",
+  "description": "Programming language preferences and priority levels for project development.",
+  "status": "stable",
+  "languages": [
+    {
+      "name": "Fortran",
+      "alias": ["f90", "fortran90"],
+      "priority": "preferred",
+      "version": "Fortran 90+",
+      "compiler": "Intel Fortran (ifort)",
+      "provider": "Intel oneAPI",
+      "notes": "Primary language for hello-world program and modules"
+    },
+    {
+      "name": "JSON",
+      "alias": ["config"],
+      "priority": "preferred",
+      "notes": "Configuration format for context files and metadata"
+    },
+    {
+      "name": "Markdown",
+      "alias": ["md", "docs"],
+      "priority": "preferred",
+      "notes": "Documentation format following CommonMark specification"
+    },
+    {
+      "name": "Shell",
+      "alias": ["sh", "bash"],
+      "priority": "allowed",
+      "notes": "Unix/Linux build scripts (cpl.sh)"
+    },
+    {
+      "name": "Batch",
+      "alias": ["bat", "cmd"],
+      "priority": "allowed",
+      "notes": "Windows build scripts (compile.bat)"
+    }
+  ],
+  "priorityLevels": {
+    "preferred": "First choice for new development",
+    "allowed": "Acceptable when justified",
+    "discouraged": "Avoid unless legacy requirement",
+    "never-use": "Explicitly prohibited"
+  }
+}

@@ -3,6 +3,6 @@ program HelloWorld
     implicit none
     ! This program prints "Hello, World!" to the screen.
     
-    call print("Hello World!", "hi", "guy","hi", "guy","hi", "guy","hi", "guy","hi", "guy")
+    call print("Hello World!")
 
 end program HelloWorld

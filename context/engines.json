@@ -1,0 +1,31 @@
+{
+  "id": "engine-registry",
+  "version": "1.0.0",
+  "status": "stable",
+  "description": "Registry of execution environments used in hello-world Fortran project.",
+  "engines": [
+    {
+      "id": "intel-fortran",
+      "name": "Intel Fortran Compiler",
+      "command": "ifort",
+      "version": "latest",
+      "purpose": "Primary Fortran compiler (Intel oneAPI)",
+      "provider": "intel-oneapi",
+      "flags": "/nologo /MP /O2 /Qparallel /assume:buffered_io /Qipo /fpp",
+      "flags_unix": "-O3",
+      "configuration": {
+        "source_dir": "src/",
+        "output": "hello-world.exe",
+        "module_dir": "build/",
+        "object_dir": "build/",
+        "libs": "static",
+        "threads": true
+      },
+      "setup": {
+        "windows": "C:\\Program Files (x86)\\Intel\\oneAPI\\setvars.bat",
+        "unix": "/opt/intel/oneapi/setvars.sh"
+      }
+    }
+  ]
+}
+   

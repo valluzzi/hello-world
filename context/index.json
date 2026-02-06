@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "master-orchestrator",
+  "version": "1.0.0",
+  "description": "Master configuration for hello-world - Simple Fortran program demonstrating basic string output functionality.",
+  "status": "stable",
+  "framework": {
+    "engines": {
+      "id": "engine-registry",
+      "file": "engines.json",
+      "description": "Execution environments (Fortran, Docker, Build Tools)"
+    },
+    "components": {
+      "id": "component-registry",
+      "file": "components.json",
+      "description": "Discrete functional units (main program, strings module, build system)"
+    }
+  },
+  "knowledge_base": [
+    {
+      "id": "languages",
+      "file": "languages.json",
+      "description": "Programming language preferences and priority levels"
+    },
+    {
+      "id": "api-references",
+      "file": "api-references.json",
+      "description": "External API references, standards, and specifications"
+    }
+  ],
+  "infrastructure": {
+    "platform": "cross-platform",
+    "compiler": "intel-fortran",
+    "build_scripts": [
+      {
+        "name": "compile.bat",
+        "platform": "windows",
+        "compiler": "ifort"
+      },
+      {
+        "name": "cpl.sh",
+        "platform": "unix",
+        "compiler": "ifort"
+      }
+    ]
+  },
+  "project": {
+    "name": "hello-world",
+    "description": "Hello world in Fortran",
+    "version": "1.0.0",
+    "language": "Fortran 90+",
+    "executable": "hello-world.exe"
+  }
+}

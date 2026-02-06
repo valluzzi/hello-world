@@ -1,0 +1,30 @@
+{
+  "id": "api-references",
+  "version": "1.0.0",
+  "description": "External API references, standards, and specifications for hello-world Fortran project.",
+  "status": "stable",
+  "specifications": [
+    {
+      "id": "fortran-standard",
+      "name": "Fortran 2008 Standard",
+      "type": "standard",
+      "description": "ISO/IEC 1539-1:2010 Fortran language specification",
+      "url": "https://www.iso.org/standard/50459.html",
+      "version": "2008",
+      "notes": "Language standard for source code compliance"
+    },
+    {
+      "id": "intel-fortran",
+      "name": "Intel Fortran Compiler (ifort)",
+      "type": "compiler",
+      "description": "Intel Fortran compiler from oneAPI toolkit",
+      "url": "https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html",
+      "version": "oneAPI",
+      "purpose": "Primary compilation toolchain",
+      "setup": {
+        "windows": "setvars.bat",
+        "unix": "setvars.sh"
+      }
+    }
+  ]
+}

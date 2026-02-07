@@ -32,3 +32,5 @@
 *.app
 
 *_offline.sh
+
+build/

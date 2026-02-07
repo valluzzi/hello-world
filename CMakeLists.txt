@@ -35,10 +35,23 @@ endif()
 # Module output directory
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/modules)
 
+# Configure version file
+set(hello_VERSION "${PROJECT_VERSION}")
+configure_file(
+    ${CMAKE_SOURCE_DIR}/src/version.f90.in
+    ${CMAKE_BINARY_DIR}/version.f90
+    @ONLY
+)
+
 # Source files
 set(SOURCES
-    src/strings.f90
+    src/check_args.f90
+    src/module_click.f90
+    src/module_filesystem.f90
+    src/module_log.f90
+    src/module_strings.f90
     src/main.f90
+    ${CMAKE_BINARY_DIR}/version.f90
 )
 
 # Executable target

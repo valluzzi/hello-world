@@ -163,7 +163,6 @@ module module_click
     !!  get_float_list
     !!
     function get_float_list(name) result(res)
-        use strings
         implicit none
         character(*), intent(in)  :: name
         character(:), allocatable :: items(:)

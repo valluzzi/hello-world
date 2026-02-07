@@ -8,42 +8,152 @@
 !!
 !! Created:     04/11/2021
 module check_of_args
+        !!
+        !!  validate_argument_types - Controlla la compatibilità di ciascun argomento con il tipo previsto
+        !!
+        subroutine validate_argument_types()
+            implicit none
+            integer :: i, n, j
+            character(:), allocatable :: arg, value
+            character(len=20) :: expected_type
+            logical :: error_found
+            error_found = .false.
+            n = command_argument_count()
+            do i = 1, n
+                arg = get_argument(i)
+                ! Cerca l'opzione corrispondente
+                do j = 1, size(OPTIONS)
+                    if (trim(arg) == trim(OPTIONS(j)%flag)) then
+                        expected_type = trim(OPTIONS(j)%arg_type)
+                        ! Se l'opzione richiede un valore, controlla il tipo
+                        if (len_trim(expected_type) > 0) then
+                            if (i+1 <= n) then
+                                value = get_argument(i+1)
+                                if (.not. is_type_compatible(value, expected_type)) then
+                                    call echo("Error: Value '"//value//"' for option '"//arg//"' is not compatible with type '"//expected_type//"'")
+                                    error_found = .true.
+                                end if
+                            else
+                                call echo("Error: Option '"//arg//"' expects a value of type '"//expected_type//"'")
+                                error_found = .true.
+                            end if
+                        end if
+                    end if
+                end do
+            end do
+            if (error_found) call exit(1)
+        end subroutine validate_argument_types
+
+        !!
+        !!  is_type_compatible - verifica se il valore è compatibile con il tipo richiesto
+        !!
+        logical function is_type_compatible(val, typ)
+            implicit none
+            character(len=*), intent(in) :: val, typ
+            logical :: is_float, is_int
+            is_type_compatible = .true.
+            if (index(typ, "FLOAT") > 0) then
+                is_float = .false.
+                call parse_float_check(val, is_float)
+                is_type_compatible = is_float
+            else if (index(typ, "INT") > 0) then
+                is_int = .false.
+                call parse_int_check(val, is_int)
+                is_type_compatible = is_int
+            else if (index(typ, "PATH") > 0) then
+                is_type_compatible = len_trim(val) > 0
+            end if
+        end function is_type_compatible
+
+        !!
+        !!  parse_float_check - verifica se una stringa è un float
+        !!
+        subroutine parse_float_check(str, ok)
+            implicit none
+            character(len=*), intent(in) :: str
+            logical, intent(out) :: ok
+            real :: tmp
+            ok = .true.
+            tmp = 0.0
+            ! Prova a convertire
+            call safe_parse_float(str, tmp, ok)
+        end subroutine parse_float_check
+
+        !!
+        !!  parse_int_check - verifica se una stringa è un int
+        !!
+        subroutine parse_int_check(str, ok)
+            implicit none
+            character(len=*), intent(in) :: str
+            logical, intent(out) :: ok
+            integer :: tmp
+            ok = .true.
+            tmp = 0
+            ! Prova a convertire
+            call safe_parse_int(str, tmp, ok)
+        end subroutine parse_int_check
+
+        !!
+        !!  safe_parse_float - parsing float senza errori
+        !!
+        subroutine safe_parse_float(str, val, ok)
+            implicit none
+            character(len=*), intent(in) :: str
+            real, intent(out) :: val
+            logical, intent(out) :: ok
+            ok = .true.
+            val = 0.0
+            ! Prova a convertire
+            if (.not. is_numeric(str)) ok = .false.
+            if (ok) then
+                read(str, *, iostat=val) val
+                if (val /= 0.0 .and. iostat /= 0) ok = .false.
+            end if
+        end subroutine safe_parse_float
+
+        !!
+        !!  safe_parse_int - parsing int senza errori
+        !!
+        subroutine safe_parse_int(str, val, ok)
+            implicit none
+            character(len=*), intent(in) :: str
+            integer, intent(out) :: val
+            logical, intent(out) :: ok
+            ok = .true.
+            val = 0
+            ! Prova a convertire
+            if (.not. is_numeric(str)) ok = .false.
+            if (ok) then
+                read(str, *, iostat=val) val
+                if (val /= 0 .and. iostat /= 0) ok = .false.
+            end if
+        end subroutine safe_parse_int
+
+        !!
+        !!  is_numeric - verifica se la stringa è numerica
+        !!
+        logical function is_numeric(str)
+            implicit none
+            character(len=*), intent(in) :: str
+            integer :: i
+            is_numeric = .true.
+            do i = 1, len_trim(str)
+                if (str(i:i) < '0' .or. str(i:i) > '9') then
+                    if (str(i:i) /= '.' .and. str(i:i) /= '-') then
+                        is_numeric = .false.
+                        return
+                    end if
+                end if
+            end do
+        end function is_numeric
     use module_strings
     use module_filesystem
     use module_click
     use module_log
+    use module_options
     use package
     implicit none
     
-    !! Option type definition
-    type :: option_t
-        character(len=20) :: flag
-        character(len=20) :: arg_type
-        character(len=200) :: description
-        logical :: required
-    end type option_t
-    
-    !! List of all available options
-    type(option_t), parameter :: OPTIONS(*) = [ &
-        option_t("--dem",     "PATH",       "DEM raster file. Horizontal and vertical units must be meters",                  .true.),  &
-        option_t("--rain",    "FLOAT|PATH", "Uniform rain intensity [mm/h] or raster rain file",                              .false.), &
-        option_t("--esl",     "FLOAT",      "Extreme sea level relative to duration (--d)",                                   .false.), &
-        option_t("--d",       "FLOAT",      "Duration of rain or esl event [s] (default: 3600)",                              .false.), &
-        option_t("--ti",      "INT",        "Output interval [s] (e.g., 3600 = 1 snapshot per hour)",                         .false.), &
-        option_t("--tmax",    "INT",        "Simulation stop time [s] (default: 3600)",                                       .false.), &
-        option_t("--delt",    "INT",        "Time step delta [s] (default: 600)",                                             .false.), &
-        option_t("--nl",      "INT",        "Number of pixels per cell side (default: 100)",                                  .false.), &
-        option_t("--man",     "FLOAT",      "Manning coefficient (default: 0.02)",                                            .false.), &
-        option_t("--force",   "",           "Force preprocessing even if .grd file exists",                                   .false.), &
-        option_t("--tmp",     "PATH",       "Temporary directory",                                                            .false.), &
-        option_t("--out",     "PATH",       "Water depth output raster (default: <dem>.wd@<time>.tif)",                       .false.), &
-        option_t("--max",     "PATH",       "Maximum water depth output raster",                                              .false.), &
-        option_t("--seamask", "PATH",       "Sea mask raster (1=sea, 0=land)",                                                .false.), &
-        option_t("--verbose", "",           "Enable verbose output",                                                          .false.), &
-        option_t("--version", "",           "Display version information",                                                    .false.), &
-        option_t("--debug",   "",           "Enable debug mode with detailed output",                                         .false.), &
-        option_t("--help",    "",           "Display this help message",                                                      .false.)  &
-    ]
     
     contains
     !!
@@ -101,7 +211,7 @@ module check_of_args
             
             !! Add (Mandatory) suffix if required
             description = trim(OPTIONS(i)%description)
-            if (OPTIONS(i)%required) then
+            if (trim(OPTIONS(i)%required) == "required") then
                 description = trim(description) // " (Mandatory)"
             end if
             
@@ -295,7 +405,7 @@ module check_of_args
         missing_found = .false.
         
         do i = 1, size(OPTIONS)
-            if (OPTIONS(i)%required) then
+            if (trim(OPTIONS(i)%required) == "required") then
                 if (.not. has_option(trim(OPTIONS(i)%flag))) then
                     if (.not. missing_found) then
                         call echo("")
@@ -344,7 +454,10 @@ module check_of_args
         
         !! Validate unknown options
         call validate_unknown_options()
-        
+
+        !! Check type compatibility degli argomenti
+        call validate_argument_types()
+
         !! Check if all required options are present
         if (.not. check_required_options()) then
             res = .false.

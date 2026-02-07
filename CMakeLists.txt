@@ -45,6 +45,7 @@ configure_file(
 
 # Source files
 set(SOURCES
+    src/module_options.f90
     src/check_args.f90
     src/module_click.f90
     src/module_filesystem.f90

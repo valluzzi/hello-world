@@ -1,1 +1,0 @@
-/opt/homebrew/bin/gfortran  -Wall -Wextra -Wimplicit-interface -fimplicit-none -cpp -O3 -march=native -funroll-loops "CMakeFiles/hello-world.dir/src/strings.f90.o" "CMakeFiles/hello-world.dir/src/main.f90.o" -o hello-world
